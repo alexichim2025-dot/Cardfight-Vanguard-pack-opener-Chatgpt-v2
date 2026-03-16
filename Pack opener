@@ -1,6 +1,6 @@
 vanguard-pack-opener
-│
-├── index.html
+
+ index.html
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +22,7 @@ vanguard-pack-opener
 
 </body>
 </html>
-├── script.js
+script.js
 let packs = {};
 
 fetch("packs.json")
@@ -58,7 +58,7 @@ function openPack(){
         result.appendChild(div);
     }
 }
-└── packs.json
+ packs.json
 {
   "BT01": [
     "Blaster Blade",
