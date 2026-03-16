@@ -1,32 +1,12 @@
-vanguard-pack-opener
-
- index.html
-<!DOCTYPE html>
-<html>
-<head>
-<title>Vanguard Pack Opener</title>
-</head>
-
-<body>
-
-<h1>Cardfight Vanguard Pack Opener</h1>
-
-<select id="packSelect"></select>
-
-<button onclick="openPack()">Open Pack</button>
-
-<h2>Pulled Cards</h2>
-<div id="result"></div>
-
-<script src="script.js"></script>
-
-</body>
-</html>
-script.js
 let packs = {};
 
 fetch("packs.json")
-.then(response => response.json())
+.then(response => {
+    if(!response.ok){
+        throw new Error("packs.json could not be loaded");
+    }
+    return response.json();
+})
 .then(data => {
     packs = data;
 
@@ -38,12 +18,20 @@ fetch("packs.json")
         option.textContent = pack;
         select.appendChild(option);
     }
+})
+.catch(error => {
+    console.error(error);
 });
 
 function openPack(){
 
     const packName = document.getElementById("packSelect").value;
     const cards = packs[packName];
+
+    if(!cards){
+        alert("Pack not loaded yet!");
+        return;
+    }
 
     const result = document.getElementById("result");
     result.innerHTML = "";
@@ -57,21 +45,4 @@ function openPack(){
 
         result.appendChild(div);
     }
-}
- packs.json
-{
-  "BT01": [
-    "Blaster Blade",
-    "King of Knights Alfred",
-    "Gallatin",
-    "Akane",
-    "Flogal"
-  ],
-  "BT02": [
-    "Dragonic Overlord",
-    "Berserk Dragon",
-    "Wyvern Guard Barri",
-    "Nehalem",
-    "Embodiment of Victory Aleph"
-  ]
 }
