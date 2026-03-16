@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cardfight Vanguard Pack Opener</title>
+<style>
+body{
+font-family: Arial;
+background:#1e1e2f;
+color:white;
+text-align:center;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+font-size:16px;
+cursor:pointer;
+}
+
+.card{
+border:1px solid white;
+padding:10px;
+margin:5px;
+display:inline-block;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Cardfight!! Vanguard Pack Opener</h1>
+
+<select id="packSelect">
+<option value="BT01">BT01 Descent of the King of Knights</option>
+<option value="BT02">BT02 Onslaught of Dragon Souls</option>
+</select>
+
+<br>
+
+<button onclick="openPack()">Open Pack</button>
+<button onclick="showCollection()">Show Collection</button>
+
+<h2>Pulled Cards</h2>
+<div id="result"></div>
+
+<h2>Your Collection</h2>
+<div id="collection"></div>
+
+<script>
+
+const packs = {
+
+BT01: [
+"Blaster Blade",
+"King of Knights, Alfred",
+"Dragon Knight Aleph",
+"Gallatin",
+"Akane"
+],
+
+BT02: [
+"Dragonic Overlord",
+"Wyvern Guard Barri",
+"Dragon Knight Nehalem",
+"Berserk Dragon",
+"Embodiment of Victory Aleph"
+]
+
+};
+
+function openPack(){
+
+let pack = document.getElementById("packSelect").value;
+let cards = packs[pack];
+
+let resultDiv = document.getElementById("result");
+resultDiv.innerHTML="";
+
+let pulled=[];
+
+for(let i=0;i<5;i++){
+
+let card = cards[Math.floor(Math.random()*cards.length)];
+
+pulled.push(card);
+
+let cardDiv=document.createElement("div");
+cardDiv.className="card";
+cardDiv.innerText=card;
+
+resultDiv.appendChild(cardDiv);
+
+}
+
+saveCollection(pulled);
+
+}
+
+function saveCollection(cards){
+
+let collection = JSON.parse(localStorage.getItem("collection")) || {};
+
+cards.forEach(card=>{
+collection[card] = (collection[card] || 0) + 1;
+});
+
+localStorage.setItem("collection",JSON.stringify(collection));
+
+}
+
+function showCollection(){
+
+let collection = JSON.parse(localStorage.getItem("collection")) || {};
+
+let div = document.getElementById("collection");
+div.innerHTML="";
+
+for(let card in collection){
+
+let c=document.createElement("div");
+c.innerText = card + " x" + collection[card];
+
+div.appendChild(c);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
